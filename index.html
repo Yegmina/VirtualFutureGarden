@@ -8,7 +8,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Убираем полосы прокрутки */
+            overflow: hidden;
             height: 100%;
             width: 100%;
         }
@@ -22,8 +22,9 @@
     <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20"></canvas>
     <script src="Build/VirtualFutureGarden.loader.js"></script>
     <script>
+        let unityInstance = null;
+
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            // Mobile device style: fill the whole browser client area with the game canvas:
             var meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
@@ -45,18 +46,22 @@
             companyName: "DefaultCompany",
             productName: "VirtualFutureGarden",
             productVersion: "1.0",
-            // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-            // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+        }).then(instance => {
+            unityInstance = instance;
+            startAmbientLightSensor(); // Start the sensor after Unity instance is ready
+        }).catch(error => {
+            console.error('Unity instance failed to load:', error);
         });
 
-        // Проверка поддержки Ambient Light Sensor и запуск датчика
         function startAmbientLightSensor() {
             if ('AmbientLightSensor' in window) {
                 try {
                     const sensor = new AmbientLightSensor({ frequency: 1 });
                     sensor.addEventListener('reading', () => {
                         var lightValue = sensor.illuminance;
-                        SendMessage('LightSensorObject', 'OnLightSensorChanged', lightValue.toString());
+                        if (unityInstance) {
+                            unityInstance.SendMessage('LightSensorObject', 'OnLightSensorChanged', lightValue.toString());
+                        }
                     });
                     sensor.addEventListener('error', (event) => {
                         console.error('Sensor error:', event.error.name, event.error.message);
@@ -69,8 +74,6 @@
                 console.warn("AmbientLightSensor не поддерживается этим браузером.");
             }
         }
-
-        window.addEventListener('load', startAmbientLightSensor);
     </script>
 </body>
 </html>
