@@ -7,7 +7,7 @@
   </head>
   <body style="text-align: center; padding: 0; border: 0; margin: 0;">
     <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20"></canvas>
-    <script src="Build/hotgame.loader.js"></script>
+    <script src="Build/VirtualFutureGarden.loader.js"></script>
     <script>
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
         // Mobile device style: fill the whole browser client area with the game canvas:
@@ -25,9 +25,9 @@
       }
 
       createUnityInstance(document.querySelector("#unity-canvas"), {
-        dataUrl: "Build/hotgame.data",
-        frameworkUrl: "Build/hotgame.framework.js",
-        codeUrl: "Build/hotgame.wasm",
+        dataUrl: "Build/VirtualFutureGarden.data",
+        frameworkUrl: "Build/VirtualFutureGarden.framework.js",
+        codeUrl: "Build/VirtualFutureGarden.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",
         productName: "VirtualFutureGarden",
