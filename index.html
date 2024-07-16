@@ -49,22 +49,44 @@
             // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
         });
 
-        // Request permission for the Ambient Light Sensor
-        if ('AmbientLightSensor' in window) {
-            navigator.permissions.query({ name: 'ambient-light-sensor' })
-                .then(function(permissionStatus) {
-                    console.log('Ambient Light Sensor permission status is ', permissionStatus.state);
+        // Request permission for the Ambient Light Sensor and start the sensor
+        function startAmbientLightSensor() {
+            if ('AmbientLightSensor' in window) {
+                try {
+                    navigator.permissions.query({ name: 'ambient-light-sensor' })
+                        .then(function(permissionStatus) {
+                            console.log('Ambient Light Sensor permission status is ', permissionStatus.state);
 
-                    permissionStatus.onchange = function() {
-                        console.log('Permission status changed to ', this.state);
-                    };
-                })
-                .catch(function(error) {
-                    console.error('Error requesting Ambient Light Sensor permission:', error);
-                });
-        } else {
-            console.log("AmbientLightSensor не поддерживается этим браузером.");
+                            if (permissionStatus.state === 'granted') {
+                                const sensor = new AmbientLightSensor();
+                                sensor.addEventListener('reading', function() {
+                                    var lightValue = sensor.illuminance;
+                                    SendMessage('LightSensorObject', 'OnLightSensorChanged', lightValue.toString());
+                                });
+                                sensor.addEventListener('error', function(event) {
+                                    console.error('Sensor error:', event.error.name, event.error.message);
+                                });
+                                sensor.start();
+                            } else {
+                                console.warn('Ambient Light Sensor permission not granted');
+                            }
+
+                            permissionStatus.onchange = function() {
+                                console.log('Permission status changed to ', this.state);
+                            };
+                        })
+                        .catch(function(error) {
+                            console.error('Error querying Ambient Light Sensor permission:', error);
+                        });
+                } catch (error) {
+                    console.error('Ambient Light Sensor initialization error:', error);
+                }
+            } else {
+                console.warn("AmbientLightSensor не поддерживается этим браузером.");
+            }
         }
+
+        window.addEventListener('load', startAmbientLightSensor);
     </script>
 </body>
 </html>
