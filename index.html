@@ -22,8 +22,6 @@
     <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20"></canvas>
     <script src="Build/VirtualFutureGarden.loader.js"></script>
     <script>
-        let unityInstance = null;
-
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
             var meta = document.createElement('meta');
             meta.name = 'viewport';
@@ -47,33 +45,10 @@
             productName: "VirtualFutureGarden",
             productVersion: "1.0",
         }).then(instance => {
-            unityInstance = instance;
-            startAmbientLightSensor(); // Start the sensor after Unity instance is ready
+            console.log('Unity instance created');
         }).catch(error => {
             console.error('Unity instance failed to load:', error);
         });
-
-        function startAmbientLightSensor() {
-            if ('AmbientLightSensor' in window) {
-                try {
-                    const sensor = new AmbientLightSensor({ frequency: 1 });
-                    sensor.addEventListener('reading', () => {
-                        var lightValue = sensor.illuminance;
-                        if (unityInstance) {
-                            unityInstance.SendMessage('LightSensorObject', 'OnLightSensorChanged', lightValue.toString());
-                        }
-                    });
-                    sensor.addEventListener('error', (event) => {
-                        console.error('Sensor error:', event.error.name, event.error.message);
-                    });
-                    sensor.start();
-                } catch (error) {
-                    console.error('Failed to start sensor:', error);
-                }
-            } else {
-                console.warn("AmbientLightSensor не поддерживается этим браузером.");
-            }
-        }
     </script>
 </body>
 </html>
