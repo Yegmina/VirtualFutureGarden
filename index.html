@@ -53,7 +53,7 @@
         function startAmbientLightSensor() {
             if ('AmbientLightSensor' in window) {
                 try {
-                    const sensor = new AmbientLightSensor();
+                    const sensor = new AmbientLightSensor({ frequency: 1 });
                     sensor.addEventListener('reading', () => {
                         var lightValue = sensor.illuminance;
                         SendMessage('LightSensorObject', 'OnLightSensorChanged', lightValue.toString());
@@ -63,11 +63,7 @@
                     });
                     sensor.start();
                 } catch (error) {
-                    if (error.name === 'SecurityError') {
-                        console.error('Permission to use the sensor was denied.');
-                    } else {
-                        console.error('Sensor not supported:', error);
-                    }
+                    console.error('Failed to start sensor:', error);
                 }
             } else {
                 console.warn("AmbientLightSensor не поддерживается этим браузером.");
