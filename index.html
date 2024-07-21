@@ -17,6 +17,7 @@
             display: block;
         }
     </style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 </head>
 <body style="text-align: center; padding: 0; border: 0; margin: 0;">
     <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20"></canvas>
@@ -53,8 +54,9 @@
       window.addEventListener('resize', resizeCanvas);
       window.addEventListener('load', resizeCanvas);
 </script>
-<script type="text/javascript" src="path-to/bower_components/crypto-js/crypto-js.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<!--<script type="text/javascript" src="path-to/bower_components/crypto-js/crypto-js.js"></script>-->
+
+
 <script>
 function sha256(message) {
   return CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
