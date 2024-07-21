@@ -54,6 +54,13 @@
       window.addEventListener('load', resizeCanvas);
 </script>
 <script type="text/javascript" src="path-to/bower_components/crypto-js/crypto-js.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+<script>
+function sha256(message) {
+  return CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+}
+</script>
+
 
 	  <script>
         window.Telegram.WebApp.ready();
