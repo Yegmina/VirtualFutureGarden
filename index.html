@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-us">
 <head>
     <meta charset="utf-8">
@@ -12,80 +12,76 @@
             height: 100%;
             width: 100%;
         }
+
         #unity-canvas {
             background: #231F20;
             display: block;
         }
     </style>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+
 </head>
 <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1080 height=1920 style="width: 1080px; height: 1920px; background: #231F20"></canvas>
+    <canvas id="unity-canvas" width=1080 height=1920 tabindex="-1" style="width: 1080px; height: 1920px; background: #231F20"></canvas>
     <script src="Build/VirtualFutureGarden.loader.js"></script>
-	
-	<script src="https://telegram.org/js/telegram-web-app.js"></script>
-	
-<script>
-      function resizeCanvas() {
-        var canvas = document.getElementById('unity-canvas');
-        var windowWidth = window.innerWidth;
-        var windowHeight = window.innerHeight;
-        
-        // Получаем соотношение сторон холста и окна
-        var canvasAspect = canvas.width / canvas.height;
-        var windowAspect = windowWidth / windowHeight;
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        function resizeCanvas() {
+            var canvas = document.getElementById('unity-canvas');
+            var windowWidth = window.innerWidth;
+            var windowHeight = window.innerHeight;
 
-        if (windowAspect < canvasAspect) {
-          // Если окно шире, чем холст, масштабируем по ширине
-          canvas.style.width = windowWidth + 'px';
-          canvas.style.height = (windowWidth / canvasAspect) + 'px';
-        } else {
-          // Если окно выше, чем холст, масштабируем по высоте
-          canvas.style.width = (windowHeight * canvasAspect) + 'px';
-          canvas.style.height = windowHeight + 'px';
+            // Получаем соотношение сторон холста и окна
+            var canvasAspect = canvas.width / canvas.height;
+            var windowAspect = windowWidth / windowHeight;
+
+            if (windowAspect < canvasAspect) {
+                // Если окно шире, чем холст, масштабируем по ширине
+                canvas.style.width = windowWidth + 'px';
+                canvas.style.height = (windowWidth / canvasAspect) + 'px';
+            } else {
+                // Если окно выше, чем холст, масштабируем по высоте
+                canvas.style.width = (windowHeight * canvasAspect) + 'px';
+                canvas.style.height = windowHeight + 'px';
+            }
+
+            canvas.style.position = 'absolute';
+            canvas.style.left = '50%';
+            canvas.style.top = '50%';
+            canvas.style.transform = 'translate(-50%, -50%)';
         }
-        
-        canvas.style.position = 'absolute';
-        canvas.style.left = '50%';
-        canvas.style.top = '50%';
-        canvas.style.transform = 'translate(-50%, -50%)';
-      }
 
-      window.addEventListener('resize', resizeCanvas);
-      window.addEventListener('load', resizeCanvas);
-</script>
-<!--<script type="text/javascript" src="path-to/bower_components/crypto-js/crypto-js.js"></script>-->
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('load', resizeCanvas);
+    </script>
 
-
-<script>
-function sha256(message) {
-  return CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
-}
-function showAlert(message) {
-  alert(message);
-}
-
-</script>
-
-
-	  <script>
-        window.Telegram.WebApp.ready();
-		if (window["Telegram"]) {
-		window["Telegram"].WebApp.expand();
-		}
+    <script>
+        function sha256(message) {
+            return CryptoJS.SHA256(message).toString(CryptoJS.enc.Hex);
+        }
+        function showAlert(message) {
+            alert(message);
+        }
 
     </script>
-	
     <script>
-		// Функция для открытия URL через Telegram WebApp или обычный браузер
-    function openURL(url) {
-      if (window.Telegram && window.Telegram.WebApp) {
-        window.Telegram.WebApp.openLink(url);
-      } else {
-        window.open(url, '_blank');
-      }
-    }
+        window.Telegram.WebApp.ready();
+        if (window["Telegram"]) {
+            window["Telegram"].WebApp.expand();
+        }
+
+    </script>
+    <script>
+        // Функция для открытия URL через Telegram WebApp или обычный браузер
+        function openURL(url) {
+            if (window.Telegram && window.Telegram.WebApp) {
+                window.Telegram.WebApp.openLink(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            // Mobile device style: fill the whole browser client area with the game canvas:
             var meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
@@ -107,10 +103,8 @@ function showAlert(message) {
             companyName: "DefaultCompany",
             productName: "VirtualFutureGarden",
             productVersion: "1.0",
-        }).then(instance => {
-            console.log('Unity instance created');
-        }).catch(error => {
-            console.error('Unity instance failed to load:', error);
+            // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+            // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
         });
     </script>
 </body>
